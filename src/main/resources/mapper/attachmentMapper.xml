@@ -1,0 +1,25 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lik.upload.mutipartupload.mapper.AttachmentMapper">
+  
+  <insert id="insert" parameterType="com.lik.upload.mutipartupload.bean.AttachmentDetail">
+      insert attachment_detail values (#{id},#{name},#{md5})
+  </insert>
+
+    <select id="findOne" parameterType="com.lik.upload.mutipartupload.bean.AttachmentDetail" resultType="int">
+        select count(1) from attachment_detail
+        <where>
+            <if test="id != null and id != ''">
+                and  id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and  name = #{name}
+            </if>
+            <if test="md5 != null and md5 != ''">
+                and  md5 = #{md5}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+uploadPath: E:/temp/
+spring:
+  profiles:
+    active: mysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8888
+  servlet:
+    context-path: /uploadProject
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*Mapper.xml
+
+---
+spring:
+  profiles: oracle
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    password:
+    username:
+    url:
+---
+spring:
+  profiles: mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password:
+    username:
+    url:
+
