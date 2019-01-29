@@ -1,5 +1,8 @@
 package com.lik.upload.mutipartupload.bean;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -38,4 +41,5 @@ public class AttachmentDetail {
     public void setMd5(String md5) {
         this.md5 = md5;
     }
+
 }

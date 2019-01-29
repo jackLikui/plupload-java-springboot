@@ -10,14 +10,14 @@ import com.sun.xml.internal.ws.client.sei.ResponseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class TestController {
@@ -61,9 +61,11 @@ public class TestController {
 
     @PostMapping("offset")
     public ResponseEntity offset(String md5,String name){
-        FileObj fileObj = uploadMapper.findOneById(md5);
+        String[] idArr = {md5};
+        List<FileObj> allById = attachmentDao.findAllById(Arrays.asList(idArr));
         ResponseEntity<Object> resultEntity = null;
-        if(fileObj != null){
+        if(allById != null && allById.size() != 0){
+            FileObj fileObj = allById.get(0);
             if(fileObj.getIsmerge() == 1){
                 resultEntity = ResponseEntity.ok("100");
             }else{
@@ -79,10 +81,11 @@ public class TestController {
         AttachmentDetail attachmentDetail = new AttachmentDetail();
         attachmentDetail.setName(name);
         attachmentDetail.setMd5(md5);
-        int count = attachmentMapper.findOne(attachmentDetail);
-        if(count == 0){
+        Example<AttachmentDetail> exple = Example.of(attachmentDetail);
+        Optional<AttachmentDetail> attachmentOp = attachmentDetailDao.findOne(exple);
+        if(!attachmentOp.isPresent()){
             attachmentDetail.setId(UUID.randomUUID().toString().replace("-",""));
-            attachmentMapper.insert(attachmentDetail);
+            attachmentDetailDao.save(attachmentDetail);
         }
         return resultEntity;
     }
@@ -104,16 +107,16 @@ public class TestController {
     }
 
     private void saveBaseInfo2DS(File filePath,FileObj fileObj){
-        Integer count = uploadMapper.findCount(fileObj.getMd5());
+        Optional<FileObj> byId = attachmentDao.findById(fileObj.getMd5());
         fileObj.setId(fileObj.getMd5());
-        if(count == 0){
-            fileObj.setPath(filePath.getPath());
-            uploadMapper.insert(fileObj);
+        fileObj.setPath(filePath.getPath());
+        if(!byId.isPresent()){
+            attachmentDao.save(fileObj);
         }else {
             if(fileObj.getChunkNum() == fileObj.getChunk()+1){
                 fileObj.setIsmerge(2);
             }
-            uploadMapper.upLoadChunk(fileObj);
+            attachmentDao.save(fileObj);
         }
     }
 
