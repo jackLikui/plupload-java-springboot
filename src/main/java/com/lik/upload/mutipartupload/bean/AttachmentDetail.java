@@ -1,8 +1,5 @@
 package com.lik.upload.mutipartupload.bean;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
