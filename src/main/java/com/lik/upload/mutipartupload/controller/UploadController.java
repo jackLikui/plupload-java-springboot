@@ -4,8 +4,8 @@ import com.lik.upload.mutipartupload.bean.AttachmentDetail;
 import com.lik.upload.mutipartupload.bean.FileObj;
 import com.lik.upload.mutipartupload.dao.AttachmentDao;
 import com.lik.upload.mutipartupload.dao.AttachmentDetailDao;
+import com.lik.upload.mutipartupload.properties.PanProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,12 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.*;
-
+/**
+ * @Author lk
+ */
 @Controller
-public class TestController {
+public class UploadController {
 
-    @Value("${uploadPath}")
-    private String uploadPath;
+    @Autowired
+    private PanProperties panProperties;
 
     @Autowired
     private AttachmentDao attachmentDao;
@@ -57,10 +59,10 @@ public class TestController {
 
     @PostMapping("offset")
     public ResponseEntity offset(String md5,String name){
-        Optional<FileObj> byId = attachmentDao.findById(md5);
+        Optional<FileObj> fileObjOpt = attachmentDao.findById(md5);
         ResponseEntity<Object> resultEntity = null;
-        if(byId.isPresent()){
-            FileObj fileObj = byId.get();
+        if(fileObjOpt.isPresent()){
+            FileObj fileObj = fileObjOpt.get();
             if(fileObj.getIsmerge() == 1){
                 resultEntity = ResponseEntity.ok("100");
             }else{
@@ -120,6 +122,6 @@ public class TestController {
         String firstPath = md5.substring(0, 2);
         String secondPath = md5.substring(2, 4);
         String finalPath = md5;
-        return new File(uploadPath+firstPath+"/"+secondPath+"/"+finalPath);
+        return new File(panProperties.getUploadDir()+firstPath+"/"+secondPath+"/"+finalPath);
     }
 }

@@ -1,22 +1,23 @@
 package com.lik.upload.mutipartupload.config;
 
 import com.lik.upload.mutipartupload.bean.FileObj;
-import com.lik.upload.mutipartupload.controller.TestController;
 import com.lik.upload.mutipartupload.mapper.UploadMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.*;
 import java.util.List;
+import java.util.stream.Stream;
+
+/**
+ * @Author lk
+ * @Description: 合并文件的线程
+ */
 @Configuration
 public class ApplicationStartUp implements ApplicationContextAware,ApplicationRunner {
 
@@ -49,6 +50,8 @@ public class ApplicationStartUp implements ApplicationContextAware,ApplicationRu
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            Stream.of(fpaths).forEach(File::delete);
         }
     }
 

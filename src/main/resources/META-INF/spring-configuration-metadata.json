@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "pan.uploadDir",
+      "type": "java.lang.String"
+    }
+  ],
+  "hints": []
+}

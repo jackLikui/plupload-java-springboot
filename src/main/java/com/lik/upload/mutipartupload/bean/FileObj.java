@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @Author lk
+ */
 @Entity
 @Table(name = "attachment")
 public class FileObj {

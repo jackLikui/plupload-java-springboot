@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author lk
+ */
 @Mapper
 public interface UploadMapper {
 
