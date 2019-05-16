@@ -20,7 +20,7 @@
           path "path",
           id
         from attachment
-        where ismerge = 0
+        where ismerge = 2
     </select>
 
     <select id="findCount" parameterType="com.lik.upload.mutipartupload.bean.FileObj" resultType="int">
